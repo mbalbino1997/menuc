@@ -74,5 +74,16 @@ namespace StartAcademy7.BLogic
 
             return isDeleted;
         }
+        public void filterEmployeesByAgeAndGender(int ageMax,int ageMin, Gender gender)
+        {
+            List<Employee> filteredEmployees = employeSet.FindAll(e => e.Age >= ageMin && e.Age<=ageMax && e.Gender == gender);
+            Console.WriteLine($"Elenco dipendenti filtrati per età compresa tra ({ageMax},{ageMin}) e genere {gender}:");
+            foreach (Employee employee in filteredEmployees)
+            {
+                Console.WriteLine($"{employee.FirstName} {employee.LastName}, età: {employee.Age}. Numero matricola:{employee.Matricola}");
+            }
+            ;
+            
+        }
     }
 }

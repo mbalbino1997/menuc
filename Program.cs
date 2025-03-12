@@ -9,9 +9,10 @@ namespace StartAcademy7
         {
             List<Employee> initialList = new()
 {
-    new Employee(30, "pinco", "pallino", 222),
-    new Employee(28, "luigi", "pluto", 123),
-    new Employee(35, "mike", "buongiorno", 234)
+    new Employee(30, "pinco", "pallino", 222, Gender.Male),
+    new Employee(28, "luigi", "pluto", 123,Gender.Male),
+    new Employee(35, "sara", "buongiorno", 234, Gender.Female),
+    new Employee(31, "michela", "buongiorno", 444, Gender.Female)
 };
             EmployeeHandler handler = new EmployeeHandler(initialList);
             bool whileTrue = false;
@@ -30,7 +31,7 @@ namespace StartAcademy7
                         break;
                     case "b":
                         whileTrue = true;
-                        Console.WriteLine("Gestione dipendenti: a)inserire dipendente; b)eliminare un dipendente; c)stampare l'elenco dipendenti");
+                        Console.WriteLine("Gestione dipendenti: a)inserire dipendente; b)eliminare un dipendente; c)stampare l'elenco dipendenti, d) filtrare in base al range di età(max e min inclusi) e genere.");
                         string manageEmployees = Console.ReadLine().ToLower();
                           
                         switch (manageEmployees)
@@ -48,12 +49,28 @@ namespace StartAcademy7
                                 Console.Write("Inserisci matricola: ");
                                 int matricola = int.Parse(Console.ReadLine());
 
-                                if (handler.addEmployee(new Employee(age, firstName, lastName, matricola)))
+                                Console.Write("Inserisci 0 se sei uomo, 1 se sei donna: ");
+                                int genderInput = int.Parse(Console.ReadLine());
+
+                                if (Enum.IsDefined(typeof(Gender), genderInput))
                                 {
-                                    Console.WriteLine("Elenco dipendenti aggiornato:");
-                                    handler.printEmployes();
+                                    Gender gender = (Gender)genderInput;
+
+                                    if (handler.addEmployee(new Employee(age, firstName, lastName, matricola, gender)))
+                                    {
+                                        Console.WriteLine("Elenco dipendenti aggiornato:");
+                                        handler.printEmployes();
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Errore nell'aggiunta del dipendente.");
+                                    }
                                 }
-                                Console.WriteLine("premi un tasto qualsiasi per continuare...");
+                                else
+                                {
+                                    Console.WriteLine("Opzione non valida per il genere.");
+                                }
+                                Console.WriteLine("Premi un tasto qualsiasi per continuare...");
                                 Console.ReadLine();
                                 break;
                             case "b":
@@ -68,6 +85,21 @@ namespace StartAcademy7
                             case "c":
                                 Console.WriteLine("Elenco dipendenti:");
                                 handler.printEmployes();
+                                Console.WriteLine("premi un tasto qualsiasi per continuare...");
+                                Console.ReadLine();
+                                break;
+                            case "d":
+                                Console.Write("Inserisci l'età minima: ");
+                                int minAge = int.Parse(Console.ReadLine());
+
+                                Console.Write("Inserisci l'età massima: ");
+                                int maxAge = int.Parse(Console.ReadLine());
+
+                                Console.Write("Inserisci 0 per Uomo o 1 per Donna (Genere): ");
+                                int filterGenderInput = int.Parse(Console.ReadLine());
+                                Gender filterGender = (Gender)filterGenderInput;
+
+                                handler.filterEmployeesByAgeAndGender(minAge,maxAge,Gender.Female);
                                 Console.WriteLine("premi un tasto qualsiasi per continuare...");
                                 Console.ReadLine();
                                 break;
